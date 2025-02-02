@@ -56,7 +56,7 @@ const generateConstellations = () => {
 
     const isClosed = Math.random() > 0.4;
 
-    const targetPoints = isClosed ? 4 : Math.random() * 2 + 3;
+    const targetPoints = isClosed ? 4 : Math.random() * 3 + 3;
     while (selectedStars.length < targetPoints) {
       const lastStar = selectedStars[selectedStars.length - 1];
       const neighbors = availableStars.filter((star) => {

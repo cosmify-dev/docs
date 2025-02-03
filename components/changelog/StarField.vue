@@ -29,8 +29,8 @@ import type { Star, Constellation } from "~/components/changelog/types";
 
 const windowSize = useWindowSize();
 
-const minDistance = 50;
-const maxDistance = 150;
+const MIN_DISTANCE = 50;
+const MAX_DISTANCE = 150;
 
 const stars = useState<{ x: number; y: number; big: boolean }[]>(
   "stars",
@@ -54,14 +54,41 @@ const generateConstellations = (): Constellation[] => {
   let availableStars = [...stars.value];
   const constellations: Constellation[] = [];
 
+  const gridCols = 3;
+  const gridRows = 3;
+  const cellWidth = windowSize.width.value / gridCols;
+  const cellHeight = windowSize.height.value / gridRows;
+
+  const gridRegions: Star[][] = Array.from(
+    { length: gridCols * gridRows },
+    () => [],
+  );
+
+  availableStars.forEach((star) => {
+    const col = Math.floor(star.x / cellWidth);
+    const row = Math.floor(star.y / cellHeight);
+    gridRegions[row * gridCols + col].push(star);
+  });
+
   for (let i = 0; i < MAX_CONSTELLATIONS; i++) {
     let selectedStars: Star[] = [];
 
-    const startIndex = getRandomIndex(availableStars);
-    selectedStars.push(availableStars.splice(startIndex, 1)[0]);
+    const startRegion = i % gridRegions.length;
+    const possibleStarts =
+      gridRegions[startRegion].length > 0
+        ? gridRegions[startRegion]
+        : availableStars;
 
-    const isClosedShape = Math.random() > 0.4;
-    const targetPoints = isClosedShape ? 4 : getRandomInt(3, 6);
+    if (possibleStarts.length === 0) continue;
+
+    const startIndex = getRandomIndex(possibleStarts);
+    selectedStars.push(possibleStarts.splice(startIndex, 1)[0]);
+    availableStars = availableStars.filter((star) => star !== selectedStars[0]);
+
+    const isClosedShape = Math.random() > 0.5;
+    const targetPoints = isClosedShape
+      ? getRandomInt(3, 6)
+      : getRandomInt(3, 9);
 
     while (selectedStars.length < targetPoints) {
       const lastStar = selectedStars[selectedStars.length - 1];
@@ -69,15 +96,14 @@ const generateConstellations = (): Constellation[] => {
 
       if (neighbors.length === 0) break;
 
-      const nextStarIndex = getRandomIndex(neighbors);
-      selectedStars.push(neighbors[nextStarIndex]);
+      const randomNeighborIndex = getRandomIndex(neighbors);
+      const nextStar = neighbors[randomNeighborIndex];
 
-      availableStars = availableStars.filter(
-        (star) => star !== neighbors[nextStarIndex],
-      );
+      selectedStars.push(nextStar);
+      availableStars = availableStars.filter((star) => star !== nextStar);
     }
 
-    selectedStars = optimizePath(selectedStars);
+    selectedStars = optimizeConnections(selectedStars);
 
     if (isClosedShape) {
       selectedStars = makeConvex(selectedStars);
@@ -91,46 +117,43 @@ const generateConstellations = (): Constellation[] => {
   return constellations;
 };
 
-const getRandomIndex = (array: any[]): number =>
-  Math.floor(Math.random() * array.length);
-const getRandomInt = (min: number, max: number): number =>
-  Math.floor(Math.random() * (max - min) + min);
-
 const getValidNeighbors = (
   currentStar: Star,
   availableStars: Star[],
 ): Star[] => {
   return availableStars.filter((star) => {
     const distance = Math.hypot(star.x - currentStar.x, star.y - currentStar.y);
-    return distance >= minDistance && distance <= maxDistance;
+    return distance >= MIN_DISTANCE && distance <= MAX_DISTANCE;
   });
 };
 
-const optimizePath = (stars: Star[]): Star[] => {
+const optimizeConnections = (stars: Star[]): Star[] => {
   if (stars.length < 3) return stars;
 
   const orderedPath: Star[] = [stars.shift() as Star];
+
   while (stars.length) {
     let nearestIndex = 0;
     let nearestDistance = Infinity;
+    const lastStar = orderedPath[orderedPath.length - 1];
 
-    orderedPath.forEach((orderedStar) => {
-      stars.forEach((star, index) => {
-        const distance = Math.hypot(
-          orderedStar.x - star.x,
-          orderedStar.y - star.y,
-        );
-        if (distance < nearestDistance) {
-          nearestDistance = distance;
-          nearestIndex = index;
-        }
-      });
+    stars.forEach((star, index) => {
+      const distance = Math.hypot(star.x - lastStar.x, star.y - lastStar.y);
+      if (distance < nearestDistance) {
+        nearestDistance = distance;
+        nearestIndex = index;
+      }
     });
 
     orderedPath.push(stars.splice(nearestIndex, 1)[0]);
   }
   return orderedPath;
 };
+
+const getRandomIndex = (array: unknown[]): number =>
+  Math.floor(Math.random() * array.length);
+const getRandomInt = (min: number, max: number): number =>
+  Math.floor(Math.random() * (max - min) + min);
 
 const makeConvex = (stars: Star[]): Star[] => {
   if (stars.length < 3) return stars;

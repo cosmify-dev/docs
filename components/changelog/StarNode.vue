@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from "vue";
+import { ref, onMounted, Transition } from "vue";
 import { animate } from "motion/mini";
 import type { Star } from "~/components/changelog/types";
 
@@ -39,8 +39,8 @@ onMounted(() => {
     },
     {
       delay,
-      duration: Math.random() * 2 + 2,
-      direction: "alternate",
+      duration: Math.random() * 4 + 4,
+      ease: "linear",
       repeat: Infinity,
     },
   );

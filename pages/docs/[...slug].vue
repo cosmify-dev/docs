@@ -24,67 +24,71 @@ const { data: documentationRoutes } = await useAsyncData("navigation", () => {
 </script>
 
 <template>
-  <div
-    class="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]"
+  <main
+    class="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 bg-muted/40 p-4 md:gap-8 md:p-10"
   >
-    <div class="flex flex-col">
-      <SidebarProvider>
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupLabel>Documentation</SidebarGroupLabel>
-            <SidebarMenu>
-              <Collapsible
-                v-for="item in documentationRoutes?.[0].children"
-                :key="item.title"
-                as-child
-                :default-open="true"
-                class="group/collapsible"
-              >
-                <SidebarMenuItem>
-                  <CollapsibleTrigger as-child>
-                    <SidebarMenuButton
-                      :tooltip="item.title"
-                      class="hover:bg-accent hover:text-accent-foreground font-semibold"
-                    >
-                      <component :is="item.icon" />
-                      <span>{{ item.title }}</span>
-                      <ChevronRight
-                        class="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90"
-                      />
-                    </SidebarMenuButton>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <SidebarMenuSub>
-                      <SidebarMenuSubItem
-                        v-for="child in item.children"
-                        :key="child.title"
+    <div
+      class="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]"
+    >
+      <div class="flex flex-col">
+        <SidebarProvider>
+          <SidebarContent>
+            <SidebarGroup>
+              <SidebarGroupLabel>Documentation</SidebarGroupLabel>
+              <SidebarMenu>
+                <Collapsible
+                  v-for="item in documentationRoutes?.[0].children"
+                  :key="item.title"
+                  as-child
+                  :default-open="true"
+                  class="group/collapsible"
+                >
+                  <SidebarMenuItem>
+                    <CollapsibleTrigger as-child>
+                      <SidebarMenuButton
+                        :tooltip="item.title"
+                        class="hover:bg-accent hover:text-accent-foreground font-semibold"
                       >
-                        <SidebarMenuSubButton
-                          :class="{
-                            'is-active': child.path === route.path,
-                          }"
-                          class="hover:bg-accent hover:text-accent-foreground font-semibold"
-                          as-child
+                        <component :is="item.icon" />
+                        <span>{{ item.title }}</span>
+                        <ChevronRight
+                          class="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90"
+                        />
+                      </SidebarMenuButton>
+                    </CollapsibleTrigger>
+                    <CollapsibleContent>
+                      <SidebarMenuSub>
+                        <SidebarMenuSubItem
+                          v-for="child in item.children"
+                          :key="child.title"
                         >
-                          <NuxtLink :to="child.path">
-                            {{ child.title }}
-                          </NuxtLink>
-                        </SidebarMenuSubButton>
-                      </SidebarMenuSubItem>
-                    </SidebarMenuSub>
-                  </CollapsibleContent>
-                </SidebarMenuItem>
-              </Collapsible>
-            </SidebarMenu>
-          </SidebarGroup>
-        </SidebarContent>
-      </SidebarProvider>
+                          <SidebarMenuSubButton
+                            :class="{
+                              'is-active': child.path === route.path,
+                            }"
+                            class="hover:bg-accent hover:text-accent-foreground font-semibold"
+                            as-child
+                          >
+                            <NuxtLink :to="child.path">
+                              {{ child.title }}
+                            </NuxtLink>
+                          </SidebarMenuSubButton>
+                        </SidebarMenuSubItem>
+                      </SidebarMenuSub>
+                    </CollapsibleContent>
+                  </SidebarMenuItem>
+                </Collapsible>
+              </SidebarMenu>
+            </SidebarGroup>
+          </SidebarContent>
+        </SidebarProvider>
+      </div>
+      <div v-if="page">
+        <ProseH1>{{ page.title }}</ProseH1>
+        <br />
+        <ContentRenderer v-if="page" :value="page" :prose="true" />
+      </div>
+      <p v-else>Page not found.</p>
     </div>
-    <div v-if="page">
-      <ProseH1>{{ page.title }}</ProseH1>
-      <br />
-      <ContentRenderer v-if="page" :value="page" :prose="true" />
-    </div>
-    <p v-else>Page not found.</p>
-  </div>
+  </main>
 </template>

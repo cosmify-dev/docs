@@ -1,18 +1,17 @@
 <template>
   <svg
-    ref="constellationRef"
-    :viewBox="`0 0 ${windowSize.width.value} ${windowSize.height.value}`"
+    :viewBox="`0 0 ${width} ${height}`"
     fill="white"
     aria-hidden="true"
     class="absolute inset-0 size-full -z-10"
   >
-    <ConstellationComponent
-      v-for="(constellation, index) in constellations"
-      :key="index"
+    <ConstellationNode
+      v-for="constellation in constellations"
+      :key="constellation.key"
       :stars="constellation.stars"
       :filled="constellation.filled"
     />
-    <StarComponent
+    <StarNode
       v-for="(star, index) in stars"
       :key="index"
       :x="star.x"
@@ -23,50 +22,55 @@
 </template>
 
 <script setup lang="ts">
-import StarComponent from "./StarComponent.vue";
-import { useWindowSize } from "@vueuse/core";
-import ConstellationComponent from "~/components/changelog/ConstellationComponent.vue";
+import StarNode from "./StarNode.vue";
+import { useDebounceFn, useWindowSize } from "@vueuse/core";
+import ConstellationNode from "~/components/changelog/ConstellationNode.vue";
 import type { Star, Constellation } from "~/components/changelog/types";
 
-const windowSize = useWindowSize();
+const { width, height } = useWindowSize();
 
-const MIN_DISTANCE = 50;
-const MAX_DISTANCE = 150;
+const MIN_DISTANCE = 40;
+const MAX_DISTANCE = 140;
 
 const stars = useState<Star[]>("stars", () => []);
 const constellations = ref<Constellation[]>();
-const constellationRef = ref<SVGElement | undefined>();
+
+const updateSize = useDebounceFn(async () => {
+  stars.value = generateStars();
+
+  await nextTick();
+
+  constellations.value = [];
+  constellations.value = generateConstellations();
+}, 300);
+
+watch([width, height], updateSize, { immediate: true });
 
 const generateStars = () => {
-  return Array.from({ length: 500 }, () => ({
-    x: Math.random() * windowSize.width.value,
-    y: Math.random() * windowSize.height.value,
+  return Array.from({ length: height.value / 2 }, () => ({
+    x: Math.random() * width.value,
+    y: Math.random() * height.value,
     big: Math.random() > 0.5,
   }));
 };
 
-onMounted(() => {
-  stars.value = generateStars();
-  constellations.value = generateConstellations();
-});
-
-watch(
-  () => [windowSize.height.value, windowSize.width.value],
-  () => {
-    stars.value = generateStars();
-    constellations.value = generateConstellations();
-  },
-);
-
 const generateConstellations = (): Constellation[] => {
-  const MAX_CONSTELLATIONS = 9;
-  let availableStars = [...stars.value];
+  let availableStars = [...stars.value].filter((star) => {
+    return (
+      star.x > 20 &&
+      star.y > 80 &&
+      star.x < width.value - 20 &&
+      star.y < height.value - 20
+    );
+  });
   const constellations: Constellation[] = [];
 
-  const gridCols = 3;
-  const gridRows = 3;
-  const cellWidth = windowSize.width.value / gridCols;
-  const cellHeight = windowSize.height.value / gridRows;
+  const gridCols = Math.round(width.value / 640);
+  const gridRows = Math.round(height.value / 360);
+
+  const maxConstellations = gridRows * gridCols;
+  const cellWidth = width.value / gridCols;
+  const cellHeight = height.value / gridRows;
 
   const gridRegions: Star[][] = Array.from(
     { length: gridCols * gridRows },
@@ -79,10 +83,11 @@ const generateConstellations = (): Constellation[] => {
     gridRegions[row * gridCols + col].push(star);
   });
 
-  for (let i = 0; i < MAX_CONSTELLATIONS; i++) {
+  for (let i = 0; i < maxConstellations; i++) {
     let selectedStars: Star[] = [];
 
     const startRegion = i % gridRegions.length;
+
     const possibleStarts =
       gridRegions[startRegion].length > 0
         ? gridRegions[startRegion]
@@ -118,11 +123,13 @@ const generateConstellations = (): Constellation[] => {
     }
 
     if (isClosedShape) selectedStars = optimizeConnections(selectedStars);
-    else
+    else {
       selectedStars = optimizeConnectionsWithBranches(
         selectedStars,
         availableStars,
       );
+      selectedStars = optimizeShortestPath(selectedStars);
+    }
 
     if (isClosedShape) {
       selectedStars = makeConvex(selectedStars);
@@ -130,7 +137,11 @@ const generateConstellations = (): Constellation[] => {
     }
 
     if (selectedStars.length > 2) {
-      constellations.push({ stars: selectedStars, filled: isClosedShape });
+      constellations.push({
+        key: Math.random() * 1000,
+        stars: selectedStars,
+        filled: isClosedShape,
+      });
     }
   }
   return constellations;
@@ -215,6 +226,34 @@ const optimizeConnectionsWithBranches = (
       }
     }
   }
+  return orderedPath;
+};
+
+const optimizeShortestPath = (stars: Star[]): Star[] => {
+  if (stars.length < 3) return stars;
+
+  const orderedPath: Star[] = [stars.shift() as Star];
+  let connections: Map<Star, Star[]> = new Map();
+
+  while (stars.length) {
+    let nearestIndex = 0;
+    let nearestDistance = Infinity;
+    const lastStar = orderedPath[orderedPath.length - 1];
+
+    stars.forEach((star, index) => {
+      const distance = Math.hypot(star.x - lastStar.x, star.y - lastStar.y);
+      if (distance < nearestDistance) {
+        nearestDistance = distance;
+        nearestIndex = index;
+      }
+    });
+
+    const nextStar = stars.splice(nearestIndex, 1)[0];
+    orderedPath.push(nextStar);
+    if (!connections.has(lastStar)) connections.set(lastStar, []);
+    connections.get(lastStar)!.push(nextStar);
+  }
+
   return orderedPath;
 };
 

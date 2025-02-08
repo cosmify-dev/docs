@@ -15,7 +15,7 @@
         .join('L')}`"
       class="invisible"
     />
-    <StarComponent
+    <StarNode
       v-for="(star, index) in uniqueStars"
       :key="index"
       :x="star.x"
@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import { onMounted, computed, ref } from "vue";
 import { animate } from "motion/mini";
-import StarComponent from "./StarComponent.vue";
+import StarNode from "./StarNode.vue";
 import type { Constellation } from "~/components/changelog/types";
 
 const props = defineProps<Constellation>();

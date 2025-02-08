@@ -1,9 +1,7 @@
 <template>
-  <div
-    class="flex overflow-hidden mx-auto mt-16 px-6 sm:mt-20 md:mt-24 lg:px-8"
-  >
+  <div class="flex overflow-hidden mx-auto px-6 lg:px-8">
     <ParticlesBg
-      class="absolute inset-0 size-full -z-10"
+      class="fixed inset-0 size-full -z-10"
       :staticity="10"
       :quantity="400"
       :color="mode === 'dark' ? '#FFF' : '#000'"
@@ -11,7 +9,7 @@
     />
 
     <svg
-      class="absolute inset-0 -z-10 size-full stroke-white/10 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
+      class="fixed inset-0 -z-10 size-full stroke-white/10 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)]"
       aria-hidden="true"
     >
       <defs>
@@ -40,7 +38,7 @@
       />
     </svg>
     <div
-      class="absolute left-[calc(50%-4rem)] top-10 -z-10 transform-gpu blur-3xl sm:left-[calc(50%-18rem)] lg:left-48 lg:top-[calc(50%-30rem)] xl:left-[calc(50%-24rem)]"
+      class="fixed left-[calc(50%-4rem)] top-10 -z-10 transform-gpu blur-3xl sm:left-[calc(50%-18rem)] lg:left-48 lg:top-[calc(50%-30rem)] xl:left-[calc(50%-24rem)]"
       aria-hidden="true"
     >
       <div
@@ -67,12 +65,10 @@
         "
       />
     </div>
-    <div
-      class="mx-auto flex px-6 pb-24 pt-10 sm:pb-32 lg:flex lg:px-8 lg:py-40"
-    >
+    <div class="mx-auto flex px-6 pt-10 lg:px-8 lg:py-24">
       <div class="mx-auto max-w-2xl shrink-0 lg:mx-0 lg:pt-8">
-        <svgo-logo class="w-16 h-16" />
-        <div class="mt-24 sm:mt-32 lg:mt-16">
+        <svgo-logo class="w-16 h-16 max-lg:hidden" />
+        <div class="mt-24 lg:mt-16">
           <RouterLink to="/changelog" class="inline-flex space-x-6">
             <Badge class="text-sm border-2"> What's new </Badge>
             <span
@@ -83,12 +79,12 @@
           </RouterLink>
         </div>
         <h1
-          class="mt-10 text-pretty text-5xl font-semibold tracking-tight text-foreground sm:text-7xl"
+          class="mt-10 text-wrap text-5xl font-semibold tracking-tight text-foreground sm:text-7xl"
         >
           Own Your Platform. Self-Host Your PaaS with Cosmify.
         </h1>
         <p
-          class="mt-8 text-pretty text-lg font-medium text-muted-foreground sm:text-xl/8"
+          class="mt-8 text-wrap text-lg font-medium text-muted-foreground sm:text-xl/8"
         >
           No Vendor Lock-in. No Limits. Just Pure, Open-Source Platform as a
           Service.
@@ -105,22 +101,20 @@
             class="text-sm/6 font-semibold text-primary"
             @click="openGitHubProject"
           >
-            View on GitHub <span aria-hidden="true">→</span>
+            View on GitHub
           </Button>
         </div>
       </div>
       <div
-        class="mx-auto mt-16 sm:mt-24 lg:ml-10 lg:mr-0 lg:mt-0 lg:flex-none xl:ml-32"
+        class="mx-auto mt-8 max-lg:hidden lg:ml-16 lg:mr-0 lg:flex-none xl:ml-32"
       >
-        <div class="flex-none">
-          <img
-            src="~/public/landing-page.png"
-            alt="App screenshot"
-            width="1539"
-            height="779"
-            class="w-[76rem] rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10"
-          />
-        </div>
+        <img
+          src="~/public/landing-page.png"
+          alt="App screenshot"
+          width="1536"
+          height="771"
+          class="w-[76rem] rounded-md bg-white/5 shadow-2xl ring-1 ring-white/10"
+        />
       </div>
     </div>
   </div>

@@ -5,6 +5,7 @@ export type Star = {
 };
 
 export type Constellation = {
+  key: string;
   stars: Star[];
   filled: boolean;
 };

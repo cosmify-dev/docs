@@ -1236,9 +1236,9 @@
     semver "^7.6.3"
 
 "@nuxtjs/mdc@^0.13.0":
-  version "0.13.1"
-  resolved "https://registry.yarnpkg.com/@nuxtjs/mdc/-/mdc-0.13.1.tgz#59e4b9e38e9e18bc34347b0c5d194382f537dad6"
-  integrity sha512-4nywK8db32Qk5iGCtJA7ahT6Mns/47VTdjOLnjPtFlTdLegOtIlXTQ5OFsVkK+JQ9R8pxiNpv8FN7LzraqOjaw==
+  version "0.13.5"
+  resolved "https://registry.yarnpkg.com/@nuxtjs/mdc/-/mdc-0.13.5.tgz#9ed9d185f7c0551717c346c43425fcc243dd7d74"
+  integrity sha512-bbToK+RByIKdg0bO1k5ApMn3zuBzXqRNOKGGIA4HiHTZAPpHnSHjmKRP+2qKbdth+QJ/vyBj3cHQTlMT5onxsg==
   dependencies:
     "@nuxt/kit" "^3.15.2"
     "@shikijs/transformers" "^1.27.2"

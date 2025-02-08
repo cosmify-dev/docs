@@ -1,10 +1,5 @@
 <template>
-  <svg
-    :viewBox="`0 0 ${width} ${height}`"
-    fill="white"
-    aria-hidden="true"
-    class="absolute inset-0 size-full -z-10"
-  >
+  <svg :viewBox="`0 0 ${width} ${height}`" fill="white" aria-hidden="true">
     <ConstellationNode
       v-for="constellation in constellations"
       :key="constellation.key"

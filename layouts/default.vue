@@ -15,7 +15,7 @@ const routes: { title: string; href: string }[] = [
   },
   {
     title: "API",
-    href: "/api/introduction",
+    href: "/api",
   },
   {
     title: "Changelog",

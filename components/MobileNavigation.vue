@@ -2,9 +2,6 @@
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-vue-next";
 import { Button } from "@/components/ui/button";
-import { useColorMode } from "@vueuse/core";
-
-const mode = useColorMode();
 </script>
 
 <template>

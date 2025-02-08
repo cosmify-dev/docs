@@ -66,7 +66,7 @@ const { data: documentationRoutes } = await useAsyncData("navigation", () => {
                             :class="{
                               'is-active': child.path === route.path,
                             }"
-                            class="hover:bg-accent hover:text-accent-foreground font-semibold"
+                            class="hover:bg-accent hover:text-accent-foreground"
                             as-child
                           >
                             <NuxtLink :to="child.path">

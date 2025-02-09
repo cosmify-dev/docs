@@ -83,6 +83,9 @@ const { data: documentationRoutes } = await useAsyncData("navigation", () => {
       </div>
       <div v-if="page">
         <ProseH1>{{ page.title }}</ProseH1>
+        <p class="text-xl text-muted-foreground mt-2" v-if="page.description">
+          {{ page.description }}
+        </p>
         <br />
         <ContentRenderer v-if="page" :value="page" :prose="true" />
       </div>

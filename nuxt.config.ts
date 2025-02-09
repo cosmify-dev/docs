@@ -30,7 +30,12 @@ export default defineNuxtConfig({
   nitro: {
     static: true,
     prerender: {
-      routes: ["/sitemap.xml", "/", "/docs/getting-started/installation"],
+      routes: [
+        "/sitemap.xml",
+        "/",
+        "/docs/getting-started/installation",
+        "/docs/community/contribute-docs",
+      ],
     },
   },
   content: {

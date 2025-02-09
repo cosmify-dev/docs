@@ -1,13 +1,10 @@
 # Cosmify Documentation
 
-Welcome to the **Cosmify Documentation** repository. This project serves as the official documentation hub for Cosmify, 
-providing detailed guides, API references, and Changelogs.
+Welcome to the **Cosmify Documentation** repository.
 
 ## Overview
 
-Cosmify is a powerful self-hosted platform designed to streamline the deployment and management of applications. 
-It simplifies the DevOps workflow by offering an intuitive interface for deploying 
-web applications, databases, and other services efficiently.
+Cosmify is a powerful self-hosted platform designed to streamline the deployment and management of applications.
 
 This repository contains the source code for the Cosmify documentation, 
 which helps users navigate the platform's features and capabilities.

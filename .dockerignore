@@ -1,0 +1,31 @@
+# Ignore node_modules from the host (dependencies will be installed in the image)
+node_modules
+
+# Git repository and related files
+.git
+.gitignore
+
+# Log files
+*.log
+logs/
+
+# Environment files (adjust if needed)
+.env
+.env.*
+
+# Nuxt-specific build and cache directories (rebuild inside container)
+.nuxt
+.output
+dist
+
+# Docker files (if you keep them in your repo)
+Dockerfile*
+docker-compose*
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# IDE or editor directories
+.vscode/
+.idea/

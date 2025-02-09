@@ -1,4 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+
 export default defineNuxtConfig({
   compatibilityDate: "2024-11-01",
   devtools: { enabled: true },
@@ -7,23 +8,44 @@ export default defineNuxtConfig({
       link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
     },
   },
+  site: {
+    url: "https://cosmify.dev",
+    name: "Cosmify Documentation",
+  },
   modules: [
     "@nuxt/eslint",
-    "@nuxt/content",
-    "@nuxtjs/tailwindcss",
     "shadcn-nuxt",
+    "@nuxtjs/tailwindcss",
     "@nuxtjs/color-mode",
     "nuxt-svgo",
+    "@nuxtjs/sitemap",
+    "@nuxtjs/robots",
+    "@nuxt/content",
   ],
   svgo: {
     svgo: false,
     defaultImport: "component",
+  },
+  ssr: true,
+  nitro: {
+    static: true,
+    prerender: {
+      routes: ["/sitemap.xml", "/", "/docs/getting-started/installation"],
+    },
   },
   content: {
     build: {
       markdown: {
         toc: {
           depth: 3,
+          searchDepth: 2,
+        },
+        highlight: {
+          theme: {
+            default: "github-light",
+            dark: "github-dark",
+            sepia: "monokai",
+          },
         },
       },
     },

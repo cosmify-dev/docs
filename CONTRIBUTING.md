@@ -20,7 +20,7 @@ Thank you for helping improve Cosmify Docs! Here’s how you can contribute:
    yarn dev
    ```
    Preview changes at `http://localhost:3000`.
-6. **Commit & Push** (Follow [Semantic Commit Messages](https://www.conventionalcommits.org/en/v1.0.0/)):
+6. **Commit & Push**:
    ```bash
    git add .
    git commit -m "feat: update documentation structure"

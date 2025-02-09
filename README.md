@@ -83,7 +83,10 @@ See our [Contributing Guidelines](CONTRIBUTING.md) for more details.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+Copyright © 2025 Alexander Padberg
+
+This project is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).  
+See the [LICENSE](LICENSE) file for details.
 
 ## Contact
 

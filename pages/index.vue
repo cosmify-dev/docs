@@ -74,7 +74,7 @@
             <span
               class="inline-flex items-center space-x-2 text-sm/6 font-medium text-muted-foreground"
             >
-              <span>Currently in Beta</span>
+              <span>Currently in Alpha</span>
             </span>
           </RouterLink>
         </div>

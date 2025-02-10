@@ -6,6 +6,11 @@ export default defineNuxtConfig({
   app: {
     head: {
       link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+      charset: "utf-8",
+      viewport: "width=device-width, initial-scale=1",
+      htmlAttrs: {
+        lang: "en",
+      },
     },
   },
   site: {
@@ -33,7 +38,7 @@ export default defineNuxtConfig({
       ],
       author: "Alexander Padberg <undefinedhuman>",
       colorScheme: "dark light",
-      applicationName: "Cosmify",
+      applicationName: "Cosmify Documentation",
       ogSiteName: "Cosmify Documentation",
       ogLocale: "en_US",
       ogType: "website",

@@ -18,10 +18,14 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@nuxtjs/color-mode",
     "nuxt-svgo",
+    "@nuxtjs/plausible",
     "@nuxtjs/sitemap",
     "@nuxtjs/robots",
     "@nuxt/content",
   ],
+  plausible: {
+    ignoredHostnames: ["localhost"],
+  },
   svgo: {
     svgo: false,
     defaultImport: "component",

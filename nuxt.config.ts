@@ -60,7 +60,11 @@ export default defineNuxtConfig({
       routes: [
         "/sitemap.xml",
         "/",
+        "/docs/getting-started/introduction",
         "/docs/getting-started/installation",
+        "/docs/getting-started/quick-start",
+        "/docs/core-concepts/overview",
+        "/docs/guides/configuration",
         "/docs/community/contribute-docs",
       ],
     },
